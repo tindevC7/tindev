@@ -1,0 +1,103 @@
+{
+    "branches":[
+        {"name":"front-end"},
+        {"name":"back-end"},
+        {"name":"ux"},
+        {"name":"qa"}
+    ],
+    "technologies":[
+        {"name":"React", "branchId":1},
+        {"name":"React Native", "branchId":1},
+        {"name":"Node Js", "branchId":2},
+        {"name":"Figma", "branchId":3},
+        {"name": "Selenium", "branchId":4}
+    ],
+    "users":[
+        {"email":"alex@gmail.com","password":"alex123456"},
+        {"email":"joe@gmail.com","password":"joe123456"},
+        {"email":"max@gmail.com","password":"max123456"},
+        {"email":"rebeca@gmail.com","password":"rebeca123456"},
+        {"email":"johndoe@gmail.com","password":"john123456"}
+    ],
+    "profiles":[
+        {
+            "UserId":1,
+            "name":"Alex",
+            "lastName":"solorzano",
+            "title":"Fullstack developer",
+            "biography":"Hola a todos, me llamo alexander tengo 23 años soy de Ecuador y estoy interesado en colaborar en cualquier proyecto me interesan especialmente los proyectos open source",
+            "avatar":"https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
+        },
+        {
+            "UserId":2,
+            "name":"Joe",
+            "lastName":"Doe",
+            "title":"Fullstack developer",
+            "biography":"Hola a todos, me llamo Joe tengo 24 años soy de Uruguay y estoy interesado en colaborar en cualquier proyecto me interesan los proyectos blockchain ",
+            "avatar":"https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
+        },
+        {
+            "UserId":3,
+            "name":"Max",
+            "lastName":"Smith",
+            "title":"Fullstack developer",
+            "biography":"Me llamo Max Smith, soy de canada tengo 30 años  y necesito desarroladores para trabajar en una app de wallet virtual ",
+            "avatar":"https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
+        },
+        {
+            "UserId":4,
+            "name":"Rebeca",
+            "lastName":"Rodriguez",
+            "title":"Ux designer",
+            "biography":"Que tal ?, me llamo Rebecca tengo 25 años soy de Colombia y mi mayor pasion es disenar soluciones simples y elegantes para llevar un proyecto desde una idea a una realidad",
+            "avatar":"https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
+        },
+        {
+            "UserId":5,
+            "name":"John",
+            "lastName":"Doe",
+            "title":"Q&A tester",
+            "biography":"Hello everyonw, my name is John im 24 years old from the US, and as a Q&A tester I can brin huge value to the table making sure your apps work the way you intend them to ",
+            "avatar":"https://simulacionymedicina.es/wp-content/uploads/2015/11/default-avatar-300x300-1.jpg"
+        }
+    ],
+    "matches":[
+        {"status":"success", "UserId":1,"UserMatchId":2},
+        {"status":"pending", "UserId":1,"UserMatchId":3},
+        {"status":"success", "UserId":2,"UserMatchId":3},
+        {"status":"success", "UserId":3,"UserMatchId":4},
+        {"status":"rejected", "UserId":4,"UserMatchId":5}
+    ],
+    "reviews":[
+        {
+            "comment":"Muy responsable participativo trabajo muy duro dio un gran feedback muy recomendado para trabajar",
+            "value":5,
+            "UserId":1,
+            "UserReviewId":2
+        },
+        {
+            "comment":"Empezo muy bien pero nos abandono a la mitad del proyecto dejandonos en un gran apuro",
+            "value":1,
+            "UserId":2,
+            "UserReviewId":3
+        },
+        {
+            "comment":"Es un verdadero experto en las tecnologias que utiliza, no es muy participativo pero cualquier tarea que se le asigno la realizo excelentemente",
+            "value":4,
+            "UserId":3,
+            "UserReviewId":4
+        },
+        {
+            "comment":"El proyecto en el que trabajamos pudo tener el exito que tuvo en gran parte por su participacion",
+            "value":5,
+            "UserId":2,
+            "UserReviewId":1
+        },
+        {
+            "comment":"Se nota que realmente esta empezando y a pesar de tener poca experiencia el entusiamo y las ganas de aprender se notan",
+            "value":3,
+            "UserId":4,
+            "UserReviewId":3
+        }
+    ]
+}

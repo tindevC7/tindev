@@ -1,0 +1,51 @@
+{
+  "name": "security-basics",
+  "version": "1.0.0",
+  "description": "A simple Express server",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev src/server.ts",
+    "lint": "ts-standard",
+    "start": "node dist/server.js",
+    "tsc": "tsc"
+  },
+  "author": "TinDev",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.8.0",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.21.4",
+    "typescript": "^4.4.4"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.14",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^18.7.23",
+    "@types/sequelize": "^4.28.14",
+    "morgan": "^1.10.0",
+    "sequelize-typescript": "^2.1.3",
+    "ts-node-dev": "^2.0.0",
+    "ts-standard": "^11.0.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "extends": [
+      "./node_modules/ts-standard/eslintrc.json"
+    ]
+  },
+  "ts-standard": {
+    "project": "path/to/tsconfig.json",
+    "ignore": [
+      "dist",
+      "src/**/*.js"
+    ]
+  }
+}
