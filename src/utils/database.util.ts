@@ -19,6 +19,12 @@ const db = new Sequelize({
   username: server.user,
   password: server.password,
   logging: false,
+  host: server.host,
+  port: server.port,
+  dialectOptions:
+    process.env.NODE_ENV === 'production'
+      ? { ssl: { required: true, rejectUnauthorized: false } }
+      : {},
   models: [Branch, Match, Profile, Review, Role, Technology, User]
 })
 
