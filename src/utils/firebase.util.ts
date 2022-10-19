@@ -17,9 +17,9 @@ const firebaseapp = initializeApp(firebaseConfig)
 export const storage = getStorage(firebaseapp)
 
 export const uploadProfileImg = async (img: Express.Multer.File, userId: number): Promise<string> => {
-  const [originalname, ext] = img.originalname.split('.')
+  const [originalname, ext]: string[] = img.originalname.split('.')
 
-  const filename = `posts/${userId}/${originalname}-${Date.now()}.${ext}`
+  const filename = `profiles/${userId}/${originalname}-${Date.now()}.${ext}`
   const imgRef = ref(storage, filename)
 
   await uploadBytes(imgRef, img.buffer)

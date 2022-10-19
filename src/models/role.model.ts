@@ -8,7 +8,7 @@ enum AccessLevel{
 
 // interface model role
 export interface RoleAttributes{
-  id: number
+  id?: number
   accessLevel: AccessLevel
 }
 

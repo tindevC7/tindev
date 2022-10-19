@@ -15,9 +15,9 @@ export interface ReviewAttributes{
   comment: string
   value: ReviewValue
   // Reviwer Id
-  UserId: number
+  UserId?: number
   // Reviewed Id
-  UserReviewId: number
+  UserReviewId?: number
 }
 
 interface ReviewCreationAttributes extends Optional<ReviewAttributes, 'UserId' | 'UserReviewId' >{}

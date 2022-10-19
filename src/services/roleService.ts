@@ -4,6 +4,10 @@ export const create = async (role: RoleAttributes): Promise<Role> => {
   return await Role.create(role)
 }
 
+export const createBulk = async (roles: RoleAttributes[]): Promise<RoleAttributes[]> => {
+  return await Role.bulkCreate(roles)
+}
+
 export const deleteById = async (id: number): Promise<Number> => {
   return await Role.destroy({ where: { id } })
 }
@@ -22,6 +26,7 @@ export const update = async (role: Role, roleUpdate: RoleAttributes): Promise<Ro
 
 export default {
   create,
+  createBulk,
   deleteById,
   getAll,
   getById,

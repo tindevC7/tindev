@@ -1,5 +1,5 @@
 import express from 'express'
-import { createRole, deleteRoleById, getAllRoles, getRoleById, updateRoleById } from '../controllers/role.controller'
+import { createBulkRole, createRole, deleteRoleById, getAllRoles, getRoleById, updateRoleById } from '../controllers/role.controller'
 import { createValidators, updateValidators } from '../middlewares/roleValidators.middlewares'
 import { roleExists } from '../middlewares/exists.middlewares'
 
@@ -12,5 +12,6 @@ roleRouter
   .get('/:roleId', roleExists, getRoleById)
   .patch('/:roleId', updateValidators, roleExists, updateRoleById)
   .post('/', createValidators, createRole)
+  .post('/bulk', createBulkRole)
 
 export default roleRouter

@@ -1,26 +1,138 @@
-import Profile, { ProfileAttributes } from '../models/profile.model'
 import { Request } from 'express'
-import { uploadProfileImg } from '../utils/firebase.util'
+import { Op } from 'sequelize'
+import { Technology, User } from '../models'
+import Profile, { ProfileAttributes } from '../models/profile.model'
 
-export const create = async (req: Request): Promise<Profile> => {
-  const profile: ProfileAttributes = req.body
-  const { sessionUser } = req
-  const imgUrl = await uploadProfileImg(req.file as Express.Multer.File, sessionUser.id)
-  profile.avatar = imgUrl
-  const newProfile = await Profile.create(profile)
+export const create = async (user: User, profile: ProfileAttributes): Promise<Profile> => {
+  const newProfile = await Profile.create({ ...profile, UserId: user.id })
+  await newProfile.$add('Technology', profile.TechIds ?? [])
   return newProfile
+}
+
+export const createBulk = async (profiles: ProfileAttributes[]): Promise<ProfileAttributes[]> => {
+  const newsProfiles = await Profile.bulkCreate(profiles)
+
+  for (let idx = 0; idx < profiles.length; idx++) {
+    await newsProfiles[idx].$add('Technology', profiles[idx].TechIds ?? [])
+  }
+
+  return newsProfiles
 }
 
 export const deleteById = async (id: number): Promise<Number> => {
   return await Profile.destroy({ where: { id } })
 }
 
-export const getAll = async (): Promise<Profile[]> => {
-  return await Profile.findAll()
+export const getAll = async (req: Request): Promise<Profile[]> => {
+  const { name, title, limit, offset } = req.query
+
+  let where
+  const paginate = {
+    limit: limit !== undefined ? Number(limit) : 999999,
+    offset: offset !== undefined ? (Number(offset) - 1) * Number(limit) : 0
+  }
+
+  if (title !== undefined && name !== undefined) {
+    where = {
+      title: {
+        [Op.iLike]: `%${title as string}%`
+      },
+      [Op.or]: {
+        name: {
+          [Op.iLike]: `%${name as string}%`
+        },
+        lastName: {
+          [Op.iLike]: `%${name as string}%`
+        }
+      }
+    }
+  } else if (title !== undefined) {
+    where = {
+      title: {
+        [Op.iLike]: `%${title as string}%`
+      }
+    }
+  } else if (name !== undefined) {
+    where = {
+      [Op.or]: {
+        name: {
+          [Op.iLike]: `%${name as string}%`
+        },
+        lastName: {
+          [Op.iLike]: `%${name as string}%`
+        }
+      }
+    }
+  }
+
+  return await Profile.findAll({
+    include: {
+      model: Technology,
+      through: {
+        attributes: []
+      }
+    },
+    where,
+    ...paginate
+  })
+}
+
+export const getPaginate = async (limit?: string, offset?: string): Promise<Profile[]> => {
+  const paginate = {
+    limit: Number(limit),
+    offset: (Number(offset) - 1) * Number(limit)
+  }
+
+  return await Profile.findAll({
+    include: {
+      model: Technology,
+      through: {
+        attributes: []
+      }
+    },
+    ...paginate
+  })
 }
 
 export const getById = async (id: number | string): Promise<Profile | null> => {
   return await Profile.findByPk(id)
+}
+
+export const getByNameOrLastName = async (query: string): Promise<Profile[]> => {
+  return await Profile.findAll({
+    include: {
+      model: Technology,
+      through: {
+        attributes: []
+      }
+    },
+    where: {
+      [Op.or]: {
+        name: {
+          [Op.iLike]: `%${query}%`
+        },
+        lastName: {
+          [Op.iLike]: `%${query}%`
+        }
+      }
+    }
+  })
+}
+
+export const getByTitle = async (query: string): Promise<Profile[]> => {
+  return await Profile.findAll({
+    include: {
+      model: Technology,
+      through: {
+        attributes: []
+      }
+    },
+    where: {
+      title: {
+        [Op.iLike]: `%${query}%`
+      }
+    }
+  })
 }
 
 export const update = async (profile: Profile, profileUpdate: ProfileAttributes): Promise<Profile> => {
@@ -31,6 +143,10 @@ export default {
   create,
   deleteById,
   getAll,
+  getByNameOrLastName,
+  getByTitle,
   getById,
-  update
+  getPaginate,
+  update,
+  createBulk
 }

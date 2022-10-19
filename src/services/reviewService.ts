@@ -9,6 +9,10 @@ export const create = async (review: ReviewAttributes, UserId: number, UserRevie
   })
 }
 
+export const createBulk = async (reviews: ReviewAttributes[]): Promise<ReviewAttributes[]> => {
+  return await Review.bulkCreate(reviews)
+}
+
 export const getAll = async (UserReviewId: number): Promise<Review[]> => {
   return await Review.findAll({ where: { UserReviewId } })
 }
@@ -21,4 +25,4 @@ export const destroy = async (review: Review): Promise<void> => {
   await review.destroy()
 }
 
-export default { create, getAll, update, destroy }
+export default { create, createBulk, getAll, update, destroy }

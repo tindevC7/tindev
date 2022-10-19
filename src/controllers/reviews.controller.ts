@@ -1,6 +1,6 @@
 import { Response, Request, NextFunction } from 'express'
 import { ReviewAttributes } from '../models/review.model'
-import { create, destroy, getAll, update } from '../services/reviewService'
+import { create, createBulk, destroy, getAll, update } from '../services/reviewService'
 import { catchAsync } from '../utils/catchAsync.util'
 
 const createReview = catchAsync(
@@ -9,6 +9,17 @@ const createReview = catchAsync(
     const { UserReviewId } = req.params
     const review: ReviewAttributes = req.body
     const data = await create(review, sessionUser.id, Number(UserReviewId))
+
+    res.status(201).json({
+      status: 'succes',
+      data
+    })
+  }
+)
+const createBulkReview = catchAsync(
+  async (req: Request, res: Response, _next: NextFunction) => {
+    const reviews: ReviewAttributes[] = req.body
+    const data = await createBulk(reviews)
 
     res.status(201).json({
       status: 'succes',
@@ -50,4 +61,4 @@ const deleteReview = catchAsync(
     })
   })
 
-export { createReview, getUsersReviews, updateReview, deleteReview }
+export { createReview, createBulkReview, getUsersReviews, updateReview, deleteReview }

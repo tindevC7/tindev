@@ -1,17 +1,19 @@
-import { Column, Model, Table } from 'sequelize-typescript'
+import { Column, Model, Table, Unique } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types'
 
 // interface model profile
 export interface ProfileAttributes{
-  id: number
+  id?: number
   name: string
   lastName: string
   title: string
   biography: string
   avatar: string
+  UserId?: number
+  TechIds?: number[]
 }
 
-interface ProfileCreationAttributes extends Optional<ProfileAttributes, 'id'>{}
+interface ProfileCreationAttributes extends Optional<ProfileAttributes, 'id' | 'UserId'>{}
 
 @Table
 export default class Profile extends Model<ProfileAttributes, ProfileCreationAttributes> {
@@ -29,4 +31,8 @@ export default class Profile extends Model<ProfileAttributes, ProfileCreationAtt
 
   @Column
   avatar!: string
+
+  @Unique
+  @Column
+  UserId!: number
 }

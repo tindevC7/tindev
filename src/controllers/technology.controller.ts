@@ -1,12 +1,23 @@
 import { Response, Request, NextFunction } from 'express'
 import { TechnologyAttributes } from '../models/technology.model'
-import { create, deleteById, getAll, update } from '../services/technologyService'
+import { create, createBulk, deleteById, getAll, update } from '../services/technologyService'
 import { catchAsync } from '../utils/catchAsync.util'
 
 const createTechnology = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
   const technology: TechnologyAttributes = req.body
 
   const data = await create(technology)
+
+  res.status(201).json({
+    status: 'success',
+    data
+  })
+})
+
+const createBulkTechnology = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
+  const technologies: TechnologyAttributes[] = req.body
+
+  const data = await createBulk(technologies)
 
   res.status(201).json({
     status: 'success',
@@ -58,6 +69,7 @@ const updateTechnologyById = catchAsync(async (req: Request, res: Response, _nex
 
 export {
   createTechnology,
+  createBulkTechnology,
   deleteTechnologyById,
   getAllTechnologies,
   getTechnologyById,

@@ -10,9 +10,8 @@ const routers = express.Router()
 
 // rutas de acceso
 routers
-  .use('/reviews', reviewRouter)
-  .use('/technologies', technologyRouter)
   .use('/profiles', profileRouter)
+  .use('/reviews', reviewRouter)
   .use('/roles', roleRouter)
   .use('/technologies', technologyRouter)
   .use('/users', userRouter)

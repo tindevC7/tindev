@@ -8,7 +8,7 @@ export enum UserStatus{
 
 // interface model usuarios
 export interface UserAttributes{
-  id: number
+  id?: number
   email: string
   password: string | undefined
   status: UserStatus

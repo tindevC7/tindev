@@ -1,10 +1,11 @@
 import { Response, Request, NextFunction } from 'express'
 import { UserAttributes } from '../models/user.model'
-import { getAll, create, update, getByEmail, remove } from '../services/userService'
+import { getAll, create, update, getByEmail, remove, createBulk } from '../services/userService'
 import { catchAsync } from '../utils/catchAsync.util'
 import { AppError } from '../utils/appError.util'
 import bcrypt from 'bcryptjs'
 import jwt, { Secret } from 'jsonwebtoken'
+
 const getAllUsers = catchAsync(async (_req: Request, res: Response, _next: NextFunction) => {
   const data = await getAll()
 
@@ -28,6 +29,17 @@ const createUser = catchAsync(async (req: Request, res: Response, _next: NextFun
   const data = await create(user) as UserAttributes
   // Remove password from respondse
   data.password = undefined
+
+  res.status(201).json({
+    status: 'success',
+    data
+  })
+})
+
+const createBulkUser = catchAsync(async (req: Request, res: Response, _next: NextFunction) => {
+  const users: UserAttributes[] = req.body
+  const data = await createBulk(users)
+  // Remove password from respondse
 
   res.status(201).json({
     status: 'success',
@@ -83,4 +95,4 @@ const login = catchAsync(async (req: Request, res: Response, next: NextFunction)
   })
 })
 
-export { createUser, getAllUsers, getUserById, updateCredentials, login, deleteUser }
+export { createUser, createBulkUser, getAllUsers, getUserById, updateCredentials, login, deleteUser }
