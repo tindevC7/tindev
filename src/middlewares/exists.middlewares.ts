@@ -1,46 +1,45 @@
 import { Request, Response, NextFunction } from 'express'
 // Models
-import { User, Branch, Technology } from '../models'
+import { Review } from '../models'
+
 // Utils
 import { catchAsync } from '../utils/catchAsync.util'
 import { AppError } from '../utils/appError.util'
+import { profileService, roleService, technologyService, userService } from '../services'
 
-const userExists = catchAsync(
+// Services
+
+export const profileExists = catchAsync(
   async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
-    const { userId } = req.params
+    const { profileId } = req.params
+    const profile = await profileService.getById(profileId)
 
-    const user = await User.findOne({
-      attributes: { exclude: ['password'] },
-      where: { id: userId }
-    })
-
-    if (user == null) {
-      return next(new AppError('User not found', 404))
+    if (profile == null) {
+      return next(new AppError('Profile not found', 404))
     }
-
-    req.user = user
+    req.profile = profile
     next()
   }
 )
 
-const branchExists = catchAsync(
+export const roleExists = catchAsync(
   async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
-    const { branchId } = req.params
-    const branch = await Branch.findByPk(branchId)
+    const { roleId } = req.params
+    const role = await roleService.getById(roleId)
 
-    if (branch == null) {
-      return next(new AppError('Branch not found', 404))
+    if (role == null) {
+      return next(new AppError('Role not found', 404))
     }
 
-    req.branch = branch
+    req.role = role
     next()
   }
 )
 
-const technologyExists = catchAsync(
+export const technologyExists = catchAsync(
   async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
     const { technologyId } = req.params
-    const technology = await Technology.findByPk(technologyId)
+    const technology = await technologyService.getById(technologyId)
 
     if (technology == null) {
       return next(new AppError('Technology not found', 404))
@@ -51,8 +50,38 @@ const technologyExists = catchAsync(
   }
 )
 
-export {
-  userExists,
-  branchExists,
-  technologyExists
+export const reviewExists = catchAsync(
+  async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+    const { UserId, UserReviewId } = req.params
+    const review = await Review.findOne({ where: { UserReviewId, UserId } })
+
+    if (review == null) {
+      return next(new AppError('Review not found', 404))
+    }
+
+    req.review = review
+    next()
+  })
+
+export const userExists = catchAsync(
+  async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
+    const { userId } = req.params
+
+    const user = await userService.getById(userId)
+
+    if (user == null) {
+      return next(new AppError('User not found', 404))
+    }
+
+    req.user = user
+    next()
+  }
+)
+
+export default {
+  technologyExists,
+  reviewExists,
+  profileExists,
+  roleExists,
+  userExists
 }

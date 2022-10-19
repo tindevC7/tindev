@@ -1,4 +1,4 @@
-import { Branch, Technology, User } from '../models'
+import { Review, Profile, Role, Technology, User } from '../models'
 
 // database interface
 export interface DataBaseType {
@@ -8,13 +8,29 @@ export interface DataBaseType {
   port: number
   user: string
 }
+
+//
+interface Header {
+  authorization: String
+}
 // global express interface
 declare global {
   namespace Express {
     export interface Request {
-      user: User
-      branch: Branch
+      profile: Profile
+      role: Role
       technology: Technology
+      review: Review
+      sessionUser: User
+      headers: Header
+      user: User
     }
+  }
+}
+
+//
+declare module 'jsonwebtoken' {
+  export interface JwtPayload {
+    id: number
   }
 }

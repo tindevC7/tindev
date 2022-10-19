@@ -1,4 +1,4 @@
-import { Branch, Match, Profile, Review, Role, Technology, User } from '../models'
+import { Match, Profile, Review, Role, Technology, User } from '../models'
 
 const initModels = (): void => {
   // USER N<=>M USER => MATCH => GENERATE AUT INTERMEDIATE TABLE
@@ -9,14 +9,11 @@ const initModels = (): void => {
   User.hasOne(Profile)
   Profile.belongsTo(User)
   // USER N<=>M ROLE => ROLS => GENERATE AUT INTERMEDIATE TABLE
-  User.belongsToMany(Role, { through: 'User_Role', as: 'UserRole' })
-  Role.belongsToMany(User, { through: 'User_Role', as: 'UserRole' })
+  User.belongsToMany(Role, { through: 'User_Roles', as: 'UserRole' })
+  Role.belongsToMany(User, { through: 'User_Roles', as: 'UserRole' })
   // PROFILE N<=>M TECHNOLOGY => GENERATE AUT INTERMEDIATE TABLE
-  Profile.belongsToMany(Technology, { through: 'Profile_Technology', as: 'ProfileTechnology' })
-  Technology.belongsToMany(Profile, { through: 'Profile_Technology', as: 'ProfileTechnology' })
-  // TECHNOLOGY N <=> M BRANCH => GENERATE AUT INTERMEDIATE TABLE
-  Technology.belongsToMany(Branch, { through: 'Technology_Branch', as: 'TechnologyBranch' })
-  Branch.belongsToMany(Technology, { through: 'Technology_Branch', as: 'TechnologyBranch' })
+  Profile.belongsToMany(Technology, { through: 'Profile_Technologies', as: 'ProfileTechnology' })
+  Technology.belongsToMany(Profile, { through: 'Profile_Technologies', as: 'ProfileTechnology' })
 }
 
 export default initModels

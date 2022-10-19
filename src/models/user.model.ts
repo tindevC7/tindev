@@ -10,7 +10,7 @@ export enum UserStatus{
 export interface UserAttributes{
   id: number
   email: string
-  password: string
+  password: string | undefined
   status: UserStatus
 }
 
@@ -18,7 +18,7 @@ interface UserCreationAttributes extends Optional<UserAttributes, 'id' > {}
 @Table
 export default class User extends Model<UserAttributes, UserCreationAttributes> {
   @AllowNull(false)
-  @Column
+  @Column({ unique: true })
   email!: string
 
   @AllowNull(false)

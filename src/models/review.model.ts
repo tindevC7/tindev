@@ -1,10 +1,10 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript'
+import { Column, Model, Table, DataType } from 'sequelize-typescript'
 import { Optional } from 'sequelize/types'
 
 // interface model reviews
-// type ReviewValue = '1'|'2'|'3'|'4'|'5'
+// type ReviewValue = 1|2|3|4|5
 
-enum ReviewValue{
+export enum ReviewValue{
   A='1',
   B='2',
   C='3',
@@ -14,9 +14,13 @@ enum ReviewValue{
 export interface ReviewAttributes{
   comment: string
   value: ReviewValue
+  // Reviwer Id
+  UserId: number
+  // Reviewed Id
+  UserReviewId: number
 }
 
-interface ReviewCreationAttributes extends Optional<ReviewAttributes, 'comment'>{}
+interface ReviewCreationAttributes extends Optional<ReviewAttributes, 'UserId' | 'UserReviewId' >{}
 
 @Table
 export default class Review extends Model<ReviewAttributes, ReviewCreationAttributes> {

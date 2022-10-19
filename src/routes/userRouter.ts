@@ -1,15 +1,19 @@
 import express from 'express'
-import { createUser, getAllUsers, getUserById, updateById } from '../controllers/users.controller'
+import { createUser, deleteUser, getAllUsers, getUserById, login, updateCredentials } from '../controllers/users.controller'
+import { protectSession } from '../middlewares/auth.middlewares'
 import { userExists } from '../middlewares/exists.middlewares'
-import { createUserValidators, updateUserValidators } from '../middlewares/validators.middlewares'
+import { createOrUpdateUserValidators } from '../middlewares/userValidators.middlewares'
 
-const usersRouter = express.Router()
+const userRouter = express.Router()
 
 // rutas de acceso
-usersRouter
+userRouter
+  .post('/login', login)
+  .post('/singup', createOrUpdateUserValidators, createUser)
+  .use(protectSession)
   .get('/', getAllUsers)
   .get('/:userId', userExists, getUserById)
-  .post('/', createUserValidators, createUser)
-  .patch('/:userId', updateUserValidators, userExists, updateById)
+  .patch('/', createOrUpdateUserValidators, updateCredentials)
+  .delete('/', userExists, deleteUser)
 
-export default usersRouter
+export default userRouter

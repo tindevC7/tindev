@@ -1,26 +1,29 @@
 import Technology, { TechnologyAttributes } from '../models/technology.model'
 
-const create = async (technology: TechnologyAttributes): Promise<Technology> => {
-  return await Technology.create({
-    name: technology.name
-  })
+export const create = async (technology: TechnologyAttributes): Promise<Technology> => {
+  return await Technology.create(technology)
 }
 
-const update = async (technology: Technology, technologyUpdate: TechnologyAttributes): Promise<Technology> => {
-  return await technology.update(technologyUpdate)
+export const deleteById = async (id: number): Promise<Number> => {
+  return await Technology.destroy({ where: { id } })
 }
 
-const getById = async (id: number): Promise<Technology | null> => {
-  return await Technology.findByPk(id)
-}
-
-const getAll = async (): Promise<Technology[]> => {
+export const getAll = async (): Promise<Technology[]> => {
   return await Technology.findAll()
 }
 
-export {
+export const getById = async (id: number | string): Promise<Technology | null> => {
+  return await Technology.findByPk(id)
+}
+
+export const update = async (technology: Technology, technologyUpdate: TechnologyAttributes): Promise<Technology> => {
+  return await technology.update(technologyUpdate)
+}
+
+export default {
   create,
-  update,
+  deleteById,
+  getAll,
   getById,
-  getAll
+  update
 }

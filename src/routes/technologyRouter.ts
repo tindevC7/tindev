@@ -1,15 +1,17 @@
 import express from 'express'
-import { getAllTechnologies, createTechnology, getTechnologyById, updateTechnologyById } from '../controllers/technology.controller'
-import { createValidators, updateValidators } from '../middlewares/branchValidators.middlewares'
-import { branchExists } from '../middlewares/exists.middlewares'
 
-const branchRouter = express.Router()
+import { getAllTechnologies, createTechnology, getTechnologyById, updateTechnologyById, deleteTechnologyById } from '../controllers/technology.controller'
+import { createUpdateValidators } from '../middlewares/technologyValidators.middlewares'
+import { technologyExists } from '../middlewares/exists.middlewares'
+
+const technologyRouter = express.Router()
 
 // rutas de acceso
-branchRouter
+technologyRouter
+  .delete('/:technologyId', technologyExists, deleteTechnologyById)
   .get('/', getAllTechnologies)
-  .get('/:branchId', branchExists, getTechnologyById)
-  .post('/', createValidators, createTechnology)
-  .patch('/:branchId', updateValidators, branchExists, updateTechnologyById)
+  .post('/', createUpdateValidators, createTechnology)
+  .get('/:technologyId', technologyExists, getTechnologyById)
+  .patch('/:technologyId', technologyExists, createUpdateValidators, updateTechnologyById)
 
-export default branchRouter
+export default technologyRouter

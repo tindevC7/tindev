@@ -1,7 +1,7 @@
 import { Sequelize } from 'sequelize-typescript'
 import * as dotenv from 'dotenv'
 import { DataBaseType } from '../interfaces/types'
-import { Branch, Match, Profile, Review, Role, Technology, User } from '../models'
+import { Match, Profile, Review, Role, Technology, User } from '../models'
 
 dotenv.config({ path: './config.env' })
 
@@ -25,7 +25,8 @@ const db = new Sequelize({
     process.env.NODE_ENV === 'production'
       ? { ssl: { required: true, rejectUnauthorized: false } }
       : {},
-  models: [Branch, Match, Profile, Review, Role, Technology, User]
+  models: [Match, Profile, Review, Role, Technology, User]
+
 })
 
 export {

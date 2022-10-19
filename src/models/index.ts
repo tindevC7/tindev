@@ -1,4 +1,3 @@
-import Branch from './branch.model'
 import Match from './match.model'
 import Profile from './profile.model'
 import Review from './review.model'
@@ -7,7 +6,6 @@ import Technology from './technology.model'
 import User from './user.model'
 
 export {
-  Branch,
   Match,
   Profile,
   Review,
