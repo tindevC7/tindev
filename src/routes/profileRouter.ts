@@ -8,12 +8,12 @@ const profileRouter = express.Router()
 
 // rutas de acceso
 profileRouter
+  .post('/bulk', createBulkProfile)
   .use(protectSession)
   .delete('/:profileId', profileExists, deleteProfileById)
   .get('/', getAllProfiles)
   .get('/:profileId', profileExists, getProfileById)
   .patch('/:profileId', profileExists, updateProfileById)
   .post('/user/:userId', userExists, upload.single('avatar'), createProfile)
-  .post('/bulk', createBulkProfile)
 
 export default profileRouter

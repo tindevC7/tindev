@@ -24,9 +24,28 @@ export const deleteById = async (id: number): Promise<Number> => {
 }
 
 export const getAll = async (req: Request): Promise<Profile[]> => {
-  const { name, title, limit, offset } = req.query
-
+  const { name, title, limit, offset, filterTechnologies } = req.query
   let where
+  let whereTechnologies
+  let technologies: string[]
+  // let branches: string[]
+  if (filterTechnologies !== undefined) {
+    technologies = (JSON.parse(filterTechnologies as string))
+    whereTechnologies = {
+      id: {
+        [Op.in]: technologies
+      }
+    }
+
+    // if (filterBranches !== undefined) {
+    //   branches = (JSON.parse(filterBranches as string))
+    //   console.log(branches)
+    //   where = {
+    //     [Op.or]: branches.map((tech) => { return { title: { [Op.iLike]: `%${tech}%` } } })
+    //   }
+    // }
+  }
+
   const paginate = {
     limit: limit !== undefined ? Number(limit) : 999999,
     offset: offset !== undefined ? (Number(offset) - 1) * Number(limit) : 0
@@ -34,15 +53,15 @@ export const getAll = async (req: Request): Promise<Profile[]> => {
 
   if (title !== undefined && name !== undefined) {
     where = {
-      title: {
-        [Op.iLike]: `%${title as string}%`
-      },
       [Op.or]: {
         name: {
           [Op.iLike]: `%${name as string}%`
         },
         lastName: {
           [Op.iLike]: `%${name as string}%`
+        },
+        title: {
+          [Op.iLike]: `%${title as string}%`
         }
       }
     }
@@ -66,12 +85,15 @@ export const getAll = async (req: Request): Promise<Profile[]> => {
   }
 
   return await Profile.findAll({
-    include: {
+    include: [{
       model: Technology,
       through: {
         attributes: []
-      }
-    },
+      },
+      where: whereTechnologies
+    }, {
+      model: User
+    }],
     where,
     ...paginate
   })
@@ -95,7 +117,16 @@ export const getPaginate = async (limit?: string, offset?: string): Promise<Prof
 }
 
 export const getById = async (id: number | string): Promise<Profile | null> => {
-  return await Profile.findByPk(id)
+  return await Profile.findByPk(id, {
+    include: [{
+      model: Technology,
+      through: {
+        attributes: []
+      }
+    }, {
+      model: User
+    }]
+  })
 }
 
 export const getByNameOrLastName = async (query: string): Promise<Profile[]> => {
