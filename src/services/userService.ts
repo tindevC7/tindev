@@ -64,7 +64,7 @@ export const getById = async (id: number | string): Promise<User | null> => {
 }
 
 export const getByEmail = async (email: string): Promise<User | null> => {
-  return await User.findOne({ where: { email, status: UserStatus.active } })
+  return await User.findOne({ where: { email, status: UserStatus.active }, include: { model: Profile, required: false } })
 }
 
 const passwordHasher = async (password: string): Promise<string> => {

@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction } from 'express'
 // Models
-import { Review } from '../models'
+import { Profile, Review, User } from '../models'
 
 // Utils
 import { catchAsync } from '../utils/catchAsync.util'
 import { AppError } from '../utils/appError.util'
-import { profileService, roleService, technologyService, userService } from '../services'
+import { profileService, roleService, technologyService } from '../services'
 
 // Services
 
@@ -66,7 +66,7 @@ export const reviewExists = catchAsync(
 export const userExists = catchAsync(
   async (req: Request, _res: Response, next: NextFunction): Promise<void> => {
     const { userId } = req.params
-    const user = await userService.getById(userId)
+    const user = await User.findOne({ where: { id: userId }, include: { model: Profile } })
 
     if (user == null) {
       return next(new AppError('User not found', 404))
